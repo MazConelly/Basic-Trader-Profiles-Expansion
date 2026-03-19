@@ -1,0 +1,349 @@
+#include "presets\trade_discounts.ltx"
+#include "presets\trade_presets.ltx"
+
+[trader]
+buy_condition	= trade_generic_buy
+sell_condition	= trade_generic_sell
+buy_supplies	= {=actor_goodwill_ge(ecolog:2500) =toolkit_task_done(3) =actor_true_community(ecolog)} supplies_6, {=actor_goodwill_ge(ecolog:1000) =toolkit_task_done(3)} supplies_4_gear_5, {=actor_goodwill_ge(ecolog:800) =toolkit_task_done(3)} supplies_4_gear_4, {=actor_goodwill_ge(ecolog:600) =toolkit_task_done(3)} supplies_4_gear_3, {=actor_goodwill_ge(ecolog:400) =toolkit_task_done(3)} supplies_4_gear_2, {=toolkit_task_done(3)} supplies_4_gear_1, {=actor_goodwill_ge(stalker:1000) =toolkit_task_done(2)} supplies_3_gear_5, {=actor_goodwill_ge(stalker:800) =toolkit_task_done(2)} supplies_3_gear_4, {=actor_goodwill_ge(stalker:600) =toolkit_task_done(2)} supplies_3_gear_3, {=actor_goodwill_ge(stalker:400) =toolkit_task_done(2)} supplies_3_gear_2, {=actor_goodwill_ge(army:1000) =toolkit_task_done(2)} supplies_3_gear_5, {=actor_goodwill_ge(army:800) =toolkit_task_done(2)} supplies_3_gear_4, {=actor_goodwill_ge(army:600) =toolkit_task_done(2)} supplies_3_gear_3, {=actor_goodwill_ge(army:400) =toolkit_task_done(2)} supplies_3_gear_2, {=actor_goodwill_ge(ecolog:1000) =toolkit_task_done(2)} supplies_3_gear_5, {=actor_goodwill_ge(ecolog:800) =toolkit_task_done(2)} supplies_3_gear_4, {=actor_goodwill_ge(ecolog:600) =toolkit_task_done(2)} supplies_3_gear_3, {=actor_goodwill_ge(ecolog:400) =toolkit_task_done(2)} supplies_3_gear_2, {=toolkit_task_done(2)} supplies_3_gear_1, {=actor_goodwill_ge(stalker:1000) =toolkit_task_done(1)} supplies_2_gear_5, {=actor_goodwill_ge(stalker:800) =toolkit_task_done(1)} supplies_2_gear_4, {=actor_goodwill_ge(stalker:600) =toolkit_task_done(1)} supplies_2_gear_3, {=actor_goodwill_ge(stalker:400) =toolkit_task_done(1)} supplies_2_gear_2, {=actor_goodwill_ge(army:1000) =toolkit_task_done(1)} supplies_2_gear_5, {=actor_goodwill_ge(army:800) =toolkit_task_done(1)} supplies_2_gear_4, {=actor_goodwill_ge(army:600) =toolkit_task_done(1)} supplies_2_gear_3, {=actor_goodwill_ge(army:400) =toolkit_task_done(1)} supplies_2_gear_2, {=actor_goodwill_ge(ecolog:1000) =toolkit_task_done(1)} supplies_2_gear_5, {=actor_goodwill_ge(ecolog:800) =toolkit_task_done(1)} supplies_2_gear_4, {=actor_goodwill_ge(ecolog:600) =toolkit_task_done(1)} supplies_2_gear_3, {=actor_goodwill_ge(ecolog:400) =toolkit_task_done(1)} supplies_2_gear_2, {=toolkit_task_done(1)} supplies_2_gear_1, {=actor_goodwill_ge(stalker:1000)} supplies_1_gear_5, {=actor_goodwill_ge(stalker:800)} supplies_1_gear_4, {=actor_goodwill_ge(stalker:600)} supplies_1_gear_3, {=actor_goodwill_ge(stalker:400)} supplies_1_gear_2, {=actor_goodwill_ge(army:1000)} supplies_1_gear_5, {=actor_goodwill_ge(army:800)} supplies_1_gear_4, {=actor_goodwill_ge(army:600)} supplies_1_gear_3, {=actor_goodwill_ge(army:400)} supplies_1_gear_2, {=actor_goodwill_ge(ecolog:1000)} supplies_1_gear_5, {=actor_goodwill_ge(ecolog:800)} supplies_1_gear_4, {=actor_goodwill_ge(ecolog:600)} supplies_1_gear_3, {=actor_goodwill_ge(ecolog:400)} supplies_1_gear_2, supplies_1_gear_1
+
+buy_item_condition_factor	= 0.01
+buy_item_exponent	= 1.75
+sell_item_exponent	= 0.75
+
+discounts	= discount_supplier_mechanic
+
+[trade_generic_buy]:mechanic_supplier_buy, toolkits_h
+itm_pda_common			 ;NO TRADE
+itm_pda_rare			 ;NO TRADE
+itm_pda_uncommon		 ;NO TRADE
+pri_a25_explosive_charge_item ;NO TRADE
+
+[trade_generic_sell]:mechanic_supplier_sell, toolkits_h
+
+[supplies_1]:common_stock
+swiss_knife				= 1, 1
+ball_hammer				= 2, 1
+duct_tape				= 2, 1
+grease					= 2, 1
+
+sharpening_stones		= 1, 1
+
+gun_oil					= 1, 1
+gun_oil_ru_d			= 1, 1
+gun_oil_ru				= 1, 1
+solvent					= 1, 1
+cleaning_kit_p			= 1, 1
+cleaning_kit_s			= 1, 1
+cleaning_kit_r5			= 1, 1
+cleaning_kit_r7			= 1, 1
+cleaning_kit_u			= 1, 1
+toolkit_p				= 1, 1
+;toolkit_s				= 1, 1
+;toolkit_r5				= 1, 1
+;toolkit_r7				= 1, 1
+
+sewing_kit_b			= 1, 1
+sewing_kit_a			= 1, 1
+sewing_kit_h			= 1, 1
+glue_b					= 1, 1
+glue_a					= 1, 1
+glue_e					= 1, 1
+armor_repair_fa			= 1, 1
+helmet_repair_kit		= 1, 1
+light_repair_kit		= 1, 1
+;medium_repair_kit		= 1, 1
+;heavy_repair_kit		= 1, 1
+;exo_repair_kit			= 1, 1
+
+leatherman_tool			= 1, 1
+rasp_tool				= 1, 1
+ramrod_tool				= 1, 1
+sewing_thread			= 3, 1
+heavy_sewing_thread		= 1, 1
+
+[supplies_2]:supplies_1
+swiss_knife				= 2, 1
+sharpening_stones		= 2, 1
+
+gun_oil					= 2, 1
+gun_oil_ru_d			= 2, 1
+gun_oil_ru				= 2, 1
+solvent					= 2, 1
+cleaning_kit_p			= 2, 1
+cleaning_kit_s			= 2, 1
+cleaning_kit_r5			= 2, 1
+cleaning_kit_r7			= 2, 1
+cleaning_kit_u			= 2, 1
+toolkit_p				= 1, 1
+toolkit_s				= 1, 1
+;toolkit_r5				= 1, 1
+;toolkit_r7				= 1, 1
+
+sewing_kit_b			= 2, 1
+sewing_kit_a			= 2, 1
+sewing_kit_h			= 2, 1
+glue_b					= 2, 1
+glue_a					= 2, 1
+glue_e					= 2, 1
+armor_repair_fa			= 2, 1
+helmet_repair_kit		= 1, 1
+light_repair_kit		= 1, 1
+medium_repair_kit		= 1, 1
+;heavy_repair_kit		= 1, 1
+;exo_repair_kit			= 1, 1
+
+leatherman_tool			= 2, 1
+rasp_tool				= 2, 1
+ramrod_tool				= 2, 1
+sewing_thread			= 4, 1
+heavy_sewing_thread		= 2, 1
+
+[supplies_3]:supplies_2
+sharpening_stones		= 3, 1
+
+gun_oil					= 3, 1
+gun_oil_ru_d			= 3, 1
+gun_oil_ru				= 3, 1
+solvent					= 3, 1
+cleaning_kit_p			= 3, 1
+cleaning_kit_s			= 3, 1
+cleaning_kit_r5			= 3, 1
+cleaning_kit_r7			= 3, 1
+cleaning_kit_u			= 3, 1
+toolkit_p				= 2, 1
+toolkit_s				= 2, 1
+toolkit_r5				= 1, 1
+;toolkit_r7				= 1, 1
+
+sewing_kit_b			= 3, 1
+sewing_kit_a			= 3, 1
+sewing_kit_h			= 3, 1
+glue_b					= 3, 1
+glue_a					= 3, 1
+glue_e					= 3, 1
+armor_repair_fa			= 2, 1
+helmet_repair_kit		= 2, 1
+light_repair_kit		= 2, 1
+medium_repair_kit		= 1, 1
+heavy_repair_kit		= 1, 1
+;exo_repair_kit			= 1, 1
+
+leatherman_tool			= 2, 1
+rasp_tool				= 3, 1
+ramrod_tool				= 3, 1
+sewing_thread			= 4, 1
+heavy_sewing_thread		= 3, 1
+
+[supplies_4]:supplies_3
+sharpening_stones		= 3, 1
+
+gun_oil					= 3, 1
+gun_oil_ru_d			= 3, 1
+gun_oil_ru				= 3, 1
+solvent					= 3, 1
+cleaning_kit_p			= 3, 1
+cleaning_kit_s			= 3, 1
+cleaning_kit_r5			= 3, 1
+cleaning_kit_r7			= 3, 1
+cleaning_kit_u			= 3, 1
+toolkit_p				= 2, 1
+toolkit_s				= 2, 1
+toolkit_r5				= 2, 1
+toolkit_r7				= 1, 1
+
+sewing_kit_b			= 3, 1
+sewing_kit_a			= 3, 1
+sewing_kit_h			= 3, 1
+glue_b					= 3, 1
+glue_a					= 3, 1
+glue_e					= 3, 1
+armor_repair_fa			= 3, 1
+helmet_repair_kit		= 2, 1
+light_repair_kit		= 2, 1
+medium_repair_kit		= 2, 1
+heavy_repair_kit		= 2, 1
+exo_repair_kit			= 1, 1
+
+leatherman_tool			= 2, 1
+rasp_tool				= 3, 1
+ramrod_tool				= 3, 1
+sewing_thread			= 5, 1
+heavy_sewing_thread		= 3, 1
+
+[gear_1]
+wpn_knife				= 1, 1
+wpn_knife2				= 1, 1
+
+wpn_pm					= 1, 0.88
+wpn_fort				= 1, 0.88
+wpn_gsh18				= 1, 0.88
+
+wpn_kiparis				= 1, 0.88
+wpn_vz61				= 1, 0.88
+wpn_mossberg590			= 1, 0.88
+
+wpn_binoc_inv			= 1, 1
+
+ammo_9x18_fmj			= 12, 0.66
+ammo_9x18_ap			= 10, 0.66
+ammo_9x18_pmm			= 8, 0.66
+ammo_9x19_fmj			= 12, 0.66
+ammo_9x19_ap			= 10, 0.66
+ammo_9x19_pbp			= 8, 0.66
+
+ammo_12x70_buck			= 10, 0.66
+ammo_12x76_zhekan		= 7, 0.66
+
+grenade_rgd5			= 3, 0.66
+grenade_gd-05			= 3, 0.66
+grenade_smoke			= 3, 0.66
+
+helm_resp				= 1, 1
+helm_bandana			= 1, 1
+helm_rp_bala			= 1, 1
+helm_cloth_mask			= 1, 1
+helm_respirator_gp5		= 1, 1
+helm_respirator_old		= 1, 1
+helm_respirator			= 1, 1
+helm_ppm88				= 1, 1
+helm_ach7				= 1, 1
+
+ecolog_guard_outfit		= 1, 1
+
+af_camelbak				= 1, 1
+af_frames				= 1, 1
+af_grid					= 1, 1
+af_kevlar				= 2, 1
+af_plates				= 2, 1
+detector_radio			= 1, 1
+detector_geiger			= 1, 1
+device_pda_1			= 1, 1
+device_torch_dummy		= 1, 1
+device_torch_nv_1		= 1, 1
+batteries_dead			= 6, 1
+
+bolts_pack				= 2, 1
+
+[gear_2]:gear_1
+ammo_5.45x39_fmj		= 15, 0.66
+ammo_5.45x39_ep			= 12, 0.66
+ammo_5.45x39_ap			= 10, 0.66
+ammo_5.56x45_fmj		= 15, 0.66
+ammo_5.56x45_ss190		= 12, 0.33
+ammo_5.56x45_ap			= 9, 0.33
+
+wpn_walther				= 1, 0.88
+wpn_beretta				= 1, 0.88
+
+wpn_mp5					= 1, 0.88
+
+wpn_wincheaster1300		= 1, 0.88
+wpn_ak74				= 1, 0.88
+wpn_l85					= 1, 0.88
+wpn_vintorez			= 1, 0.88
+
+wpn_sil_9mm				= 1, 0.88
+wpn_sil_45				= 1, 0.88
+wpn_sil_pbs1			= 1, 0.88
+wpn_sil_pbs4			= 1, 0.88
+wpn_sil_tgp-a			= 1, 0.88
+wpn_sil_nato			= 1, 0.66
+wpn_sil_atg				= 1, 0.88
+wpn_sil_aps				= 1, 0.88
+wpn_sil_9a91			= 1, 0.88
+wpn_sil_6p9				= 1, 0.88
+
+ac10632					= 1, 0.88
+acog					= 1, 0.66
+1p29					= 1, 0.88
+kobra					= 1, 0.88
+ps01					= 1, 0.88
+
+wpn_knife3				= 1, 1
+wpn_axe					= 1, 1
+wpn_axe2				= 1, 1
+
+equ_small_pack			= 1, 1
+
+helm_m40				= 1, 1
+helm_hardhat			= 1, 1
+helm_ach7ex				= 1, 1
+
+[gear_3]:gear_2
+ammo_7.62x39_fmj		= 15, 0.66
+ammo_7.62x39_ap			= 12, 0.66
+ammo_7.62x51_fmj		= 15, 0.33
+ammo_7.62x51_ap			= 12, 0.33
+
+wpn_pp2000				= 1, 0.88
+wpn_aek					= 1, 0.88
+wpn_ak103				= 1, 0.88
+wpn_sig550				= 1, 0.88
+wpn_fal					= 1, 0.88
+
+wpn_knife4				= 1, 1
+
+wpn_addon_grenade_launcher	= 1, 0.88
+
+helm_battle				= 1, 1
+
+device_torch_nv_2		= 1, 1
+equ_small_military_pack	= 1, 1
+device_pda_2			= 1, 1
+
+[gear_4]:gear_3
+ammo_12.7x55_ap			= 10, 1
+ammo_12.7x55_fmj		= 12, 1
+ammo_9x39_pab9			= 15, 0.33
+ammo_9x39_ap			= 12, 0.33
+
+wpn_ash12				= 1, 1
+wpn_fnc					= 1, 0.88
+wpn_svd					= 1, 0.88
+wpn_val					= 1, 0.88
+wpn_vintorez			= 1, 0.88
+
+wpn_knife5				= 1, 1
+
+scientific_outfit		= 1, 1
+ecolog_proto_exo_outfit	= 1, 1
+helm_exo				= 1, 1
+
+af_camelbak_up			= 1, 1
+af_freon_up				= 1, 1
+af_frames_up			= 1, 1
+
+device_torch_nv_3		= 1, 1
+equ_military_pack		= 1, 1
+
+[gear_5]:gear_4
+equ_tourist_pack		= 1, 1
+
+ecolog_exo_outfit		= 1, 1
+ghillie_outfit			= 1, 1
+
+[supplies_1_gear_1]:supplies_1,gear_1 ;-- no tools
+[supplies_1_gear_2]:supplies_1,gear_2
+[supplies_1_gear_3]:supplies_1,gear_3
+[supplies_1_gear_4]:supplies_1,gear_4
+[supplies_1_gear_5]:supplies_1,gear_5
+
+[supplies_2_gear_1]:supplies_2,gear_1 ;-- basic tools delivered
+[supplies_2_gear_2]:supplies_2,gear_2
+[supplies_2_gear_3]:supplies_2,gear_3
+[supplies_2_gear_4]:supplies_2,gear_4
+[supplies_2_gear_5]:supplies_2,gear_5
+
+[supplies_3_gear_1]:supplies_3,gear_1 ;-- advanced tools delivered
+[supplies_3_gear_2]:supplies_3,gear_2
+[supplies_3_gear_3]:supplies_3,gear_3
+[supplies_3_gear_4]:supplies_3,gear_4
+[supplies_3_gear_5]:supplies_3,gear_5
+
+[supplies_4_gear_1]:supplies_4,gear_1 ;-- expert tools delivered
+[supplies_4_gear_2]:supplies_4,gear_2
+[supplies_4_gear_3]:supplies_4,gear_3
+[supplies_4_gear_4]:supplies_4,gear_4
+[supplies_4_gear_5]:supplies_4,gear_5
+
+[supplies_6]:supplies_4,gear_5

@@ -1,0 +1,305 @@
+--[[ 
+==============================================================================================================================
+-- 				Actor Goodwill Greater or Equal Condition Extension for Basic Trader Profiles Expansion 					--
+==============================================================================================================================
+Version:	1.0.1
+Authors: 	dEmergence
+------------------------------------------------------------------------------------------------------------------------------
+
+Allows changes to the way the "actor_goodwill_ge" function works by modifying the default 
+behaviour. Vanilla Anomaly only uses that function for traders, however any other addons 
+which might use it will also be affected.
+
+The new default behaviour can be set by modifying the "default_mode" variable in the "Settings" section below.
+Now you don't need to find and replace all instances of "actor_goodwill_ge" in the trader ltx files.
+
+====================================================================================================================
+Default Syntax:	
+--------------------------------------------------------------------------------------------------------------------
+	
+	{=actor_goodwill_ge(trader_faction:threshold)}
+	
+====================================================================================================================
+	
+Default Syntax Example:
+
+	buy_supplies = {=actor_goodwill_ge(stalker:1000)} supplies_3, {=actor_goodwill_ge(stalker:500)} supplies_2, supplies_1
+	
+	The function will evaluate based on "default_mode" setting.
+
+--------------------------------------------------------------------------------------------------------------------
+Available mode settings:
+--------------------------------------------------------------------------------------------------------------------
+
+	 def	->	Default: 
+				Only compares goodwill with given trader faction against the threshold number.
+	 xpos	->  Exclusive positive:
+				Finds the highest goodwill with given trader faction -or- factions friendly to it and compares it against the threshold number.
+				Using this as default should provide a better experience with Dynamic Faction Relations enabled but it works just as well without.
+	 xneg	->  Exclusive negative:
+				Finds the highest goodwill with an enemy to the trader faction and compares it against the threshold number.
+	 xcom	->  Exclusive comparative:
+				Finds the highest goodwill with given trader faction -or- factions friendly to it and substracts the highest goodwill with an enemy to the trader faction.
+				The result is compared against the threshold number.
+	 com	->	Total Comparative: 
+				Sums up goodwill with given trader faction -and- factions friendly to it and substracts goodwill with any faction that is an enemy.
+				The result is compared against the threshold number.
+ 	 pos	-> 	Total Positive:
+				Sums up goodwill with given trader faction -and- factions friendly to it and compares the result against the threshold number.
+ 	 neg	-> 	Total Negative:
+				Sums up goodwill with factions that are enemy to the trader faction and compares the result against the threshold number.
+				
+	Note: By default, goodwill with other factions than the trader faction is weighted less so actor would require a higher goodwill value with them to reach the threshold. This can be disabled by modifying the "apply_factor_in" setting below.
+
+====================================================================================================================
+Additional Parameters Syntax:
+--------------------------------------------------------------------------------------------------------------------
+
+Apart from just changing the default mode you can use any of these different evaluation types directly by adding an additional parameter to the function call in the ltx.
+This allows for way more flexibility in designing conditions:
+
+	{=actor_goodwill_ge(trader_faction:threshold:mode)}
+
+====================================================================================================================
+
+Additional Parameters Examples:
+
+	Lets assume actor somehow has the following goodwill values: stalker = 500, duty = 300, freedom = 200, ecologists = 150, bandit = 200
+	We assume the Anomaly default relations: stalkers and bandits are enemies, so are ecologists and bandits and duty and freedom etc.
+	For these examples the factors for comparative evaluation are set as follows: trader faction x1.0, neutral faction x0.75, enemy faction x1.0
+	
+	Example #1: Using 'xpos'
+		
+		buy_supplies = {=actor_goodwill_ge(duty:350:xpos)} supplies_2, ..., supplies_1
+		
+		The condition for supplies_2 is met as because stalker goodwill is sufficient (calculation: 500 * 0.75 = 375).
+		This works as long as stalker and duty are neutral towards each other. 
+		The underlying implementation always checks current relations which makes these conditions fully adaptable to dynamic faction relations.
+
+	Example #2: 'xpos' vs. 'pos'
+		
+		buy_supplies = {=actor_goodwill_ge(ecolog:400:xpos)} supplies_2, supplies_1
+		
+		The condition for supplies_2 is NOT met because actor has barely enough goodwill with any ecolog friendly faction or ecolog themselves:
+			
+			stalker (500 * 0.75 = 375), duty (300 * 0.75 = 225), freedom (200 * 0.75 = 150), ecologists (150)
+		
+		However, if we were to change the mode to "pos" like this:
+		
+		buy_supplies = {=actor_goodwill_ge(ecolog:400:pos)} supplies_2, supplies_1
+		
+		The condition would be easily met as it would compare the given threshold of 400 to a combined goodwill total of 900 (375 + 225 + 150 + 150)
+		
+	Example #3: 'pos' vs. 'com'
+
+		buy_supplies = {=actor_goodwill_ge(stalker:600:pos)} supplies_2, {=actor_goodwill_ge(stalker:700:com)} supplies_2, supplies_1
+		
+		The first condition can not be met yet but actor will have access to supplies_2 because the second condition is using the comparative evaluation mode:
+		
+			result 'com' 	= stalker (500) + duty (300 * 0.75 = 225) + freedom (200 * 0.75 = 150) + ecologists (150 * 0.75 = 112) - bandits (200) = 787
+
+	Example #4: 'com' vs. 'xcom'
+	
+		buy_supplies = {=actor_goodwill_ge(freedom:200:xcom)} supplies_2, {=actor_goodwill_ge(freedom:500:com)} supplies_2, supplies_1
+		
+		Comparative modes could especially make people watch their goodwill with different factions.
+		In this example the first condition cannot be met and the second one is met, but not by much.
+		
+			result 'xcom' 	= max goodwill among neutrals (375,200,112,150) - max goodwill among enemies (300) = 75
+			result 'com' 	= stalker (500 * 0.75 = 375) + freedom (200) + ecologists (150 * 0.75 = 112) + bandits (200 * 0.75 = 150) - duty (300) = 537
+			
+	So we see altogether the x-modes are the most contained and, in a way, closer to the original.
+	The aggregation modes are the most inclusive but should be used with higher threshold values.
+	Combining both could surely make for interesting scenarios.
+		
+	Example #5: Having fun with special modes like 'xneg'
+		
+		buy_supplies = {=actor_goodwill_ge(stalker:200:xneg)} supplies_0, {=actor_goodwill_ge(stalker:500:def)} supplies_2, supplies_1
+
+		In this scenario suppose a separate supplies_0 level was added containing junk items. 
+		Since the actor has 200 goodwill with an enemy he will be presented with junk even though he would otherwise qualify for supplies_2.
+
+--]]
+
+------------------
+---- Settings ----
+------------------
+
+-- local default_mode = "xpos" -- recommended for default_mode: xpos, xcom, def
+
+local mode_choices = {
+	[0] = "def",
+	[1] = "xpos",
+	[2] = "xneg",
+	[3] = "xcom",
+	[4] = "pos",
+	[5] = "neg",
+	[6] = "com",
+}
+
+local default_mode = mode_choices[tonumber(basic_trader_profiles_expansion_mcm.script.get_config("choice_mode"))] or "def"
+
+--[[ Weighted Goodwill ]]--
+
+-- The following settings control how goodwill is weighted in comparative calculations.
+-- local factor_faction = 1.00 -- goodwill with the traders faction
+-- local factor_friends = 1.00 -- goodwill with allies of the trader
+-- local factor_neutral = 1.00 -- goodwill with factions neutral to trader faction
+-- local factor_enemies = 1.00 -- goodwill with enemy factions of trader faction
+local factor_faction = (basic_trader_profiles_expansion_mcm.script.get_config("factor_faction"))
+local factor_friends = (basic_trader_profiles_expansion_mcm.script.get_config("factor_friends"))
+local factor_neutral = (basic_trader_profiles_expansion_mcm.script.get_config("factor_neutral"))
+local factor_enemies = (basic_trader_profiles_expansion_mcm.script.get_config("factor_enemies"))
+
+-- You can disable the weighted goodwill factors for specific calculations here:
+-- local apply_factor_in = {
+	-- ["aggregate"] = true, -- used by modes: com, pos and neg
+	-- ["max_goodwill"] = true, -- used by modes: xcom, xpos and xneg
+-- }
+local apply_factor_in_aggregate = (basic_trader_profiles_expansion_mcm.script.get_config("apply_factor_in_aggregate"))
+local apply_factor_in_max_goodwill = (basic_trader_profiles_expansion_mcm.script.get_config("apply_factor_in_max_goodwill"))
+
+-- negative relation values between trader faction and neutral faction will (further) affect aggregated goodwill
+-- e.g. if trader faction has a negative relation with a neutral faction around -500 why would they care as much about the goodwill you have with them?
+-- However, at most goodwill is completely negated by this. It will build no negative number due to this setting.
+-- local negative_trader_faction_relations_affect_comparative_goodwill = true
+local negative_trader_faction_relations_affect_comparative_goodwill = (basic_trader_profiles_expansion_mcm.script.get_config("negative_trader_faction_relations_affect_comparative_goodwill"))
+
+
+--[[ Aggregating Negative Goodwill ]]--
+
+-- neg. goodwill with factions neutral or allied to trader will not -decrease- total comparative goodwill value:
+-- local dismiss_goodwill_value_if_negative_on_add = false
+local dismiss_goodwill_value_if_negative_on_add = (basic_trader_profiles_expansion_mcm.script.get_config("dismiss_goodwill_value_if_negative_on_add"))
+
+-- neg. goodwill with enemies of trader faction will not -increase- total comparative goodwill value:
+-- local dismiss_goodwill_value_if_negative_on_sub = false
+local dismiss_goodwill_value_if_negative_on_sub = (basic_trader_profiles_expansion_mcm.script.get_config("dismiss_goodwill_value_if_negative_on_sub"))
+
+
+
+-------------------
+---- Utilities ----
+-------------------
+local is_factions_enemies = game_relations.is_factions_enemies
+local is_factions_friends = game_relations.is_factions_friends
+local get_community_goodwill = relation_registry.community_goodwill
+local math_max = math.max
+
+---------------------------------------------------
+---- Cache and overwrite the original function ----
+---------------------------------------------------
+OG_xr_conditions_actor_goodwill_ge = xr_conditions.actor_goodwill_ge
+xr_conditions.actor_goodwill_ge = function(actor,npc,p)
+	-- p[1] : trader faction
+	-- p[2] : threshold - comparative goodwill needs to be equal to or greater than that value
+	if not (db.actor and p[1] and p[2]) then return false end
+	if not game_relations.is_valid(p[1]) then return false end
+
+	local ge = tonumber(p[2])
+	if not ge then return false end
+	
+	local trader_faction = p[1]
+	
+	local mode = (#p > 2) and p[3] or default_mode
+
+	if (npc) and (npc:section()) then
+		printf("actor_goodwill_ge(%s,%s,%s) : evaluating trader npc %s", trader_faction, ge, mode, npc:section())
+	end
+	
+	-- if (mode == "def") then
+	if (mode == 0) then
+		return OG_xr_conditions_actor_goodwill_ge(actor,npc,p)
+	end
+	
+	local goodwill_total = 0
+	-- if (mode == "com") then
+	if (mode == 6) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.aggregate(trader_faction, "comparative")
+	-- elseif (mode == "pos") then
+	elseif (mode == 4) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.aggregate(trader_faction, "positive")
+	-- elseif (mode == "neg") then
+	elseif (mode == 5) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.aggregate(trader_faction, "negative")
+	-- elseif (mode == "xpos") then
+	elseif (mode == 1) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.max_goodwill(trader_faction, "neutral")
+	-- elseif (mode == "xneg") then
+	elseif (mode == 2) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.max_goodwill(trader_faction, "enemies")
+	-- elseif (mode == "xcom") then
+	elseif (mode == 3) then
+		goodwill_total = xr_conditions_actor_goodwill_ge_traderexpansion.max_goodwill(trader_faction, "neutral") - xr_conditions_actor_goodwill_ge_traderexpansion.max_goodwill(trader_faction, "enemies")
+	end
+	
+	printf("actor_goodwill_ge(%s,%s) : goodwill_total %s - returns %s", trader_faction, ge, goodwill_total, (goodwill_total >= ge))
+	
+	-- compare result with given threshold
+	return (goodwill_total >= ge)
+end
+
+function aggregate(trader_faction, mode)
+	local factions_table = game_relations.factions_table
+	local goodwill_total = 0
+	for i=1,#factions_table do
+		-- compatibility w/ mods that add zombied faction to factions_table e.g. DFRC and excluding 'monster' just in case any mod adds them
+		if (factions_table[i] ~= "zombied" and factions_table[i] ~= "monster") then
+			local gw = get_community_goodwill(factions_table[i], AC_ID)
+			local add_gw = dismiss_goodwill_value_if_negative_on_add and math_max(gw,0) or gw
+			local sub_gw = dismiss_goodwill_value_if_negative_on_sub and math_max(gw,0) or gw
+			-- aggregate goodwill based on their relation with trader faction
+			if is_factions_enemies(trader_faction, factions_table[i]) then
+				if (mode ~= "positive") then
+					-- local enemy_factor = (apply_factor_in["aggregate"]) and factor_enemies or 1
+					local enemy_factor = (apply_factor_in_aggregate = true) and factor_enemies or 1
+					if (mode == "comparative") then
+						goodwill_total = goodwill_total - (sub_gw * enemy_factor)
+					elseif (mode == "negative") then
+						goodwill_total = goodwill_total + (sub_gw * enemy_factor)
+					end
+				end
+			elseif (mode ~= "negative") then
+				local rel_value = relation_registry.community_relation(trader_faction, factions_table[i])
+				local rel_reduction = (negative_trader_faction_relations_affect_comparative_goodwill and (rel_value < 0) and (gw > 0)) and rel_value or 0
+				local factor = (factions_table[i] == trader_faction) and factor_faction or is_factions_friends(trader_faction, factions_table[i]) and factor_friends or factor_neutral
+				-- local friendly_factor = (apply_factor_in["aggregate"]) and factor or 1
+				local friendly_factor = (apply_factor_in_aggregate = true) and factor or 1
+				goodwill_total = goodwill_total + math_max(((add_gw * friendly_factor) + rel_reduction),0)
+			end
+		end
+	end
+	return goodwill_total
+end
+
+function max_goodwill(trader_faction, mode)
+	local factions_table = game_relations.factions_table
+	if not (mode) then mode = "neutral" end
+	local goodwill_max = 0
+	for i=1,#factions_table do
+		if (factions_table[i] ~= "zombied" and factions_table[i] ~= "monster") then
+			local gw = get_community_goodwill(factions_table[i], AC_ID)
+			if is_factions_enemies(trader_faction, factions_table[i]) then
+				if (mode == "enemies") then
+					-- local enemy_factor = (apply_factor_in["max_goodwill"]) and factor_enemies or 1
+					local enemy_factor = (apply_factor_in_max_goodwill = true) and factor_enemies or 1
+					local enemy_gw = gw * enemy_factor
+					if (enemy_gw > goodwill_max) then
+						goodwill_max = enemy_gw
+					end
+				end
+			else
+				local rel_value = relation_registry.community_relation(trader_faction, factions_table[i])
+				local rel_reduction = (negative_trader_faction_relations_affect_comparative_goodwill and (rel_value < 0) and (gw > 0)) and rel_value or 0
+				local factor = (factions_table[i] == trader_faction) and factor_faction or is_factions_friends(trader_faction, factions_table[i]) and factor_friends or factor_neutral
+				-- local friendly_factor = (apply_factor_in["max_goodwill"]) and factor or 1
+				local friendly_factor = (apply_factor_in_max_goodwill = true) and factor or 1
+				local friendly_gw = gw * friendly_factor + rel_reduction
+				if (friendly_gw > goodwill_max) then
+					goodwill_max = friendly_gw
+				end
+			end
+		end
+	end
+	return goodwill_max
+end

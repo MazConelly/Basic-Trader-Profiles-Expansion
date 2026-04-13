@@ -1,0 +1,32 @@
+-- local trade_table = {
+	-- ["bandit"] = {[5] = {["bandit_proto_scientific_outfit"] = 1,["bandit_light_exo_outfit"] = 1,},},
+	-- ["dolg"] = {[5] = {["dolg_proto_scientific_outfit"] = 1,},},
+	-- ["ecolog"] = {[5] = {["proto_scientific_outfit"] = 1,},},
+	-- ["freedom"] = {[5] = {["svoboda_proto_scientific_outfit"] = 1,["freedom_light_exo_outfit"] = 1,},},
+	-- ["killer"] = {[5] = {["merc_proto_scientific_outfit"] = 1,["killer_light_exo_outfit"] = 1,},},
+	-- ["army"] = {[5] = {["proto_scientific_outfit"] = 1,},},
+	-- ["monolith"] = {[5] = {["monolith_proto_scientific_outfit"] = 1,["monolith_light_exo_outfit"] = 1,},},
+	-- ["stalker"] = {[5] = {["proto_scientific_outfit"] = 1,["neutral_light_exo_outfit"] = 1,},},
+	-- ["csky"] = {[5] = {["cs_proto_scientific_outfit"] = 1,["clear_sky_light_exo_outfit"] = 1,},},
+	-- ["isg"] = {[5] = {["isg_proto_scientific_outfit"] = 1,},},
+	-- ["renegade"] = {[5] = {["renegade_proto_scientific_outfit"] = 1,},},
+-- }
+
+-- function proto_restocker(npc)
+	-- local is_trader = trader_autoinject.get_trader_type(npc) == trader_autoinject.SUPPLIER
+	-- if not is_trader then 
+		-- return 
+	-- end
+	-- local community = npc:character_community() or "stalker"
+	-- local trader_table = trade_table[community] or trade_table["stalker"]
+	-- local supply_level = clamp(trader_autoinject.supply_level(npc, true) or 1, 1, 5)
+	-- if trader_table[supply_level] then	
+			-- trader_autoinject.spawn_items(npc, trader_table[supply_level], true)	
+	-- end
+-- end
+
+-- TraderAuto = trader_autoinject.update
+-- function trader_autoinject.update(npc)
+    -- TraderAuto(npc)
+    -- proto_restocker(npc)
+-- end

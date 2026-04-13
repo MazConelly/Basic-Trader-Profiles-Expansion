@@ -1,0 +1,85 @@
+-- valid_traders = {
+    -- [trader_autoinject.SUPPLIER] = true,
+-- }
+
+-- trade_table = {}
+-- trade_table["freedom"] = {
+    -- [1] = {
+        -- ["grenade_m84"] = {2, 0.66},
+        -- ["grenade_m-7290"] = {2, 0.66},
+    -- },
+    -- [2] = {
+        -- ["grenade_m84"] = {3, 0.88},
+        -- ["grenade_m-7290"] = {3, 0.88}, 
+    -- },
+    -- [3] = {
+        -- ["grenade_m84"] = {3, 1},
+        -- ["grenade_m-7290"] = {3, 1}, 
+    -- },
+-- }
+-- trade_table["ecolog"] = {
+    -- [1] = {
+        -- ["grenade_zarya2"] = {2, 0.66}, 
+    -- },
+    -- [2] = {
+        -- ["grenade_zarya2"] = {3, 0.88}, 
+    -- },
+    -- [3] = {
+        -- ["grenade_zarya2"] = {3, 1}, 
+    -- },
+-- }
+-- trade_table["stalker"] = trade_table["ecolog"]
+-- trade_table["isg"] = trade_table["freedom"]
+-- trade_table["csky"] = trade_table["ecolog"]
+-- trade_table["monolith"] = trade_table["ecolog"]
+-- trade_table["killer"] = trade_table["freedom"]
+-- trade_table["duty"] = trade_table["ecolog"]
+-- trade_table["army"] = trade_table["ecolog"]
+
+-- function max_supply_level_items(trader_table)
+    -- for i = 5, 1, -1 do
+        -- if trader_table[i] then
+            -- return trader_table[i]
+        -- end
+    -- end
+-- end
+
+-- local furniture = {
+    -- ["esc_m_trader"] = true,
+    -- ["red_m_lesnik"] = true
+-- }
+
+-- function flash_spawn(npc)
+
+    -- local trader = trader_autoinject.get_trader_type(npc)
+    -- if not valid_traders[trader] then return end
+
+    -- local community = 
+        -- (trader_autoinject.get_real_community and trader_autoinject.get_real_community(npc))
+        -- or ((furniture[npc:section()] or furniture[npc:name()]) and "stalker")
+        -- or character_community(npc)
+    -- if not community then return end
+
+    -- local trader_table = trade_table[community]
+    -- if not trader_table then return end
+
+    -- local items = max_supply_level_items(trader_table)
+    -- if not items then return end
+    
+    -- local spawn_items = {}
+    -- for sec, item_props in pairs(items) do
+        -- for i = 1, item_props[1] do
+            -- if math.random() < item_props[2] then
+                -- if not spawn_items[sec] then spawn_items[sec] = 0 end
+                -- spawn_items[sec] = spawn_items[sec] + 1
+            -- end
+        -- end
+    -- end
+    -- trader_autoinject.spawn_items(npc, spawn_items)
+-- end
+
+-- TraderAuto = trader_autoinject.update
+-- function trader_autoinject.update(npc)
+    -- TraderAuto(npc)
+    -- flash_spawn(npc)
+-- end

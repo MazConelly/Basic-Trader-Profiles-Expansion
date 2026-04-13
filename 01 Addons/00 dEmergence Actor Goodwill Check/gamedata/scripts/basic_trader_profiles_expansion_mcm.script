@@ -1,0 +1,44 @@
+function get_config(key)
+    if ui_mcm then return ui_mcm.get("basic_trader_profiles_expansion/"..key) else return defaults[key] end
+end
+
+function on_mcm_load()
+	op = {
+		id= "basic_trader_profiles_expansion", sh=true, gr={
+			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_title",size= {512,50},spacing= 20 },
+
+			{id = "choice_mode", type = "list", val = 2, def=1, content= {
+				{0, "ui_mcm_basic_trader_profiles_expansion_def"},
+				{1, "ui_mcm_basic_trader_profiles_expansion_xpos"},
+				{2, "ui_mcm_basic_trader_profiles_expansion_xneg"},
+				{3, "ui_mcm_basic_trader_profiles_expansion_xcom"},
+				{4, "ui_mcm_basic_trader_profiles_expansion_pos"},
+				{5, "ui_mcm_basic_trader_profiles_expansion_neg"},
+				{6, "ui_mcm_basic_trader_profiles_expansion_com"}
+			}},
+
+			{id = "choice_mode_help", type = "desc", clr = {200, 200, 255, 200}, text = "ui_mcm_basic_trader_profiles_expansion_choice_mode_help"},
+
+			-- {id = "divider", type = "line"},
+			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_weighed_options",size= {512,50},spacing= 20 },
+
+			{ id = "negative_trader_faction_relations_affect_comparative_goodwill", type = "check", val = 1, def = true },
+
+			{ id = "apply_factor_in_aggregate", type = "check", val = 1, def = true },
+			{ id = "apply_factor_in_max_goodwill", type = "check", val = 1, def = true },
+
+			{ id = "factor_faction", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 1.00 },
+			{ id = "factor_friends", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 0.75 },
+			{ id = "factor_neutral", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 0.50 },
+			{ id = "factor_enemies", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 1.00 },
+
+			-- {id = "divider", type = "line"},
+			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_aggregating_options",size= {512,50},spacing= 20 },
+			
+			{ id = "dismiss_goodwill_value_if_negative_on_add", type = "check", val = 1, def = false },
+			{ id = "dismiss_goodwill_value_if_negative_on_sub", type = "check", val = 1, def = false },
+		}
+	}
+
+	return op
+end

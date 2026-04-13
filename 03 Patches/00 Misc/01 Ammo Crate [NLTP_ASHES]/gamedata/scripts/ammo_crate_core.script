@@ -1,0 +1,351 @@
+---[[
+--- Original Author(s) : NLTP_ASHES
+--- Edited : N/A
+--- Date : 20/02/2023
+--- License : Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+---
+--- Script used to manage the ammo crate logic.
+---]]
+
+--[[----------------------------------------------------------------------------------------------------
+	Constants and imported functions
+------------------------------------------------------------------------------------------------------]]
+
+VERSION = "1.1.3"
+
+AMMO_CRATES = {}
+
+local dbg_printf = ammo_crate_utils.dbg_printf
+local find_object_by_id = ammo_crate_utils.find_object_by_id
+local get_translation = game.translate_string
+
+local last_opened_crate_id = nil
+local last_opened_fake_stash_id = nil
+
+--[[----------------------------------------------------------------------------------------------------
+	Ammo crate functions
+------------------------------------------------------------------------------------------------------]]
+
+--- Function used to run specific actions (notably calculate the weight of the crate) when an ammo crate is spawned.
+function bind(obj)
+    if not obj then return end
+
+    -- If the crate has never been opened, allocate a table for it among the AMMO_CRATES table
+    if not AMMO_CRATES[obj:id()] then
+        AMMO_CRATES[obj:id()] = {}
+    end
+
+    obj:set_weight(calculate_crate_full_weight(obj:id()))
+end
+
+--- Function used to return the text written when right clicking on the crate.
+function menu_open(obj)
+    if not obj and obj:parent() and obj:parent():id() == AC_ID then return end
+
+    return get_translation("st_ac_open")
+end
+
+--- Function used to open the ammo crate.
+function func_open_crate(obj)
+    if not obj then return end
+
+    -- Spawn a fake stash that will be used as the ammo crate
+    local sec = "hidden_box"
+    local pos = db.actor:position()
+    local lvid = level.vertex_id(pos)
+    local gvid = db.actor:game_vertex_id()
+    local fake_stash_se = alife_create(sec,pos,lvid,gvid)
+
+    -- Uh oh
+    if not fake_stash_se then
+        printe("!ERROR func_open_crate | Failed to create fake stash for ammo crate ! [%s][%s][%s][%s]",sec,pos,lvid,gvid)
+        return
+    end
+
+    dbg_printf("[AC] Fake stash created with id %s for crate id %s",fake_stash_se.id,obj:id())
+
+    -- Open the fake stash on next update so the game object has time to spawn
+    CreateTimeEvent("ammo_crate_open",fake_stash_se.id,0,open_fake_stash,fake_stash_se.id,obj:id())
+end
+
+--- Function called when the player has opened the ammo crate.
+function open_fake_stash(fake_stash_id,crate_id)
+    -- Get the fake stash object
+    local fake_stash_se = fake_stash_id and alife_object(fake_stash_id)
+    local fake_stash_obj = fake_stash_se and find_object_by_id(fake_stash_se.id)
+
+    -- Fire the time event again if the fake stash hasn't spawned yet
+    if not fake_stash_obj then
+        return false
+    end
+
+    -- Populate the fake stash
+    for _,ammo in pairs(AMMO_CRATES[crate_id]) do
+        -- Mags Redux 2023.01.29 compatibility
+        if magazine_binder and magazine_binder.is_magazine(ammo.sec) then
+            local se_mag = alife_create_item(ammo.sec, fake_stash_se)
+            magazine_binder.set_data(se_mag.id, ammo.data)
+        else
+            alife_create_item(ammo.sec, fake_stash_se, {ammo = ammo.count})
+        end
+    end
+
+    -- Close the inventory UI
+    hide_hud_inventory()
+
+    -- Open the fake stash on next update so populated items have time to spawn
+    CreateTimeEvent("fake_stash_open",fake_stash_se.id,0,function()
+
+        -- Save the crate & fake stash ids
+        last_opened_crate_id = crate_id
+        last_opened_fake_stash_id = fake_stash_se.id
+
+        -- Force the player into opening the fake stash
+        fake_stash_obj:use(db.actor)
+
+        -- Mags Redux 2023.01.29 compatibility
+        if magazines then
+            CreateTimeEvent("fake_stash_refresh", last_opened_fake_stash_id, 0.5, function()
+                magazines.timed_refresh()
+                return true
+            end)
+        end
+
+        dbg_printf("[AC] Opening fake stash id %s for crate id %s",last_opened_fake_stash_id,last_opened_crate_id)
+
+        return true
+    end)
+
+    RegisterScriptCallback("GUI_on_hide", close_ammo_crate)
+
+    return true
+end
+
+--- Function called when the player closes the ammo crate.
+function close_ammo_crate(name)
+    -- Return if GUI_on_hide has been fired for something else than UIInventory
+    if name ~= "UIInventory" then return end
+
+    -- Unregister the callback so it doesn't try to close the crate again
+    UnregisterScriptCallback("GUI_on_hide", close_ammo_crate)
+
+    -- Get the fake stash object
+    local fake_stash_se = last_opened_fake_stash_id and alife_object(last_opened_fake_stash_id)
+    local fake_stash_obj = fake_stash_se and find_object_by_id(fake_stash_se.id)
+
+    -- Get the ammo crate object
+    local ammo_crate_se = last_opened_crate_id and alife_object(last_opened_crate_id)
+    local ammo_crate_obj = ammo_crate_se and find_object_by_id(ammo_crate_se.id)
+
+    -- Reset the cache for the crate's content
+    AMMO_CRATES[last_opened_crate_id] = {}
+
+    -- Cycle the fake stash's content and cache the item from the fake stash
+    fake_stash_obj:iterate_inventory_box(function(owner,item)
+        -- Mags Redux 2023.01.29 compatibility
+        if magazine_binder and magazine_binder.is_magazine(item:section()) then
+            local sec = item:section()
+            local weight = item:weight()
+            local data = magazine_binder.get_data(item:id()) or magazine_binder.create_mag_data(item:id(),item:section(),nil)
+            table.insert(AMMO_CRATES[last_opened_crate_id],{ sec=sec, weight=weight, data=data })
+        else
+            local sec = item:section()
+            local weight = item:weight()
+            local count = item.ammo_get_count and item:ammo_get_count() or 1
+            table.insert(AMMO_CRATES[last_opened_crate_id],{ sec=sec, weight=weight, count=count })
+        end
+
+        -- Destroy the item
+        alife_release(alife_object(item:id()))
+    end)
+
+    ammo_crate_obj:set_weight(calculate_crate_full_weight(ammo_crate_obj:id()))
+
+    dbg_printf("[AC] Ammo crate cached content :\n%s", utils_data.print_table(AMMO_CRATES[last_opened_crate_id], false, true))
+
+    -- Destroy the fake stash
+    CreateTimeEvent("ammo_crate_close",fake_stash_se.id,0,function()
+        dbg_printf("[AC] Releasing fake stash id %s",fake_stash_se.id)
+        alife_release(fake_stash_se)
+        return true
+    end)
+end
+
+--- Function called when the player has moved an item between the crate and his inventory to restrict the item of items allowed to move.
+function check_move_ammo(flags, npc_id, obj, mode, bag)
+    -- Return if ActorMenu_on_item_before_move has been called outside of our context
+    if (mode ~= "loot") or (npc_id ~= last_opened_fake_stash_id) then return end
+
+    -- Get the kind of object being moved
+    local obj_kind = ini_sys:r_string_ex(obj:section(),"kind") or "unknown"
+
+    -- If the player is trying to move something else than ammo, refuse the transfer
+    if obj_kind ~= "w_ammo" then
+        flags.ret_value = false
+    end
+end
+
+--- Function called when the player has moved an item between the crate and his inventory to update the weight of the crate.
+function update_crate_weight(npc_id, obj, mode, bag)
+    -- Return if ActorMenu_on_item_before_move has been called outside of our context
+    if (mode ~= "loot") or (npc_id ~= last_opened_fake_stash_id) then return end
+
+    -- Get the ammo crate object
+    local ammo_crate_se = last_opened_crate_id and alife_object(last_opened_crate_id)
+    local ammo_crate_obj = ammo_crate_se and find_object_by_id(ammo_crate_se.id)
+
+    -- Moving an item from the inventory to the crate
+    if bag == 2 then
+        ammo_crate_obj:set_weight(ammo_crate_obj:weight() + obj:weight())
+        dbg_printf("[AC] Item moved %s to crate %s (is_mag:%s)",obj:section(),ammo_crate_obj:id(),magazine_binder and magazine_binder.is_magazine(obj:section()) or false)
+
+    -- Moving an item from the crate to the inventory
+    elseif bag == 7 then
+        ammo_crate_obj:set_weight(ammo_crate_obj:weight() - obj:weight())
+        dbg_printf("[AC] Item moved %s from crate %s (is_mag:%s)",obj:section(),ammo_crate_obj:id(),magazine_binder and magazine_binder.is_magazine(obj:section()) or false)
+
+    -- Following code is a fail safe, technically this would never run
+    else
+        printe("!ERROR check_move_ammo | Unknown bag ! [%s]",bag)
+
+        local fake_stash_se = last_opened_fake_stash_id and alife_object(last_opened_fake_stash_id)
+        local fake_stash_obj = fake_stash_se and find_object_by_id(fake_stash_se.id)
+
+        local ammo_crate_weight = SYS_GetParam(2, "ammo_crate", "inv_weight")
+
+        fake_stash_obj:iterate_inventory_box(function(owner,item)
+            ammo_crate_weight = ammo_crate_weight + item:weight()
+        end)
+
+        ammo_crate_obj:set_weight(ammo_crate_weight)
+    end
+end
+
+--- Function used to calculate the weight of the crate according to its content
+function calculate_crate_full_weight(ammo_crate_id)
+    local ammo_crate_weight = SYS_GetParam(2, "ammo_crate", "inv_weight")
+
+    -- Mags Redux 2023.01.29 compatibility
+    for _,ammo_or_mag in pairs(AMMO_CRATES[ammo_crate_id]) do
+        ammo_crate_weight = ammo_crate_weight + ammo_or_mag.weight
+    end
+
+    return ammo_crate_weight
+end
+
+--[[----------------------------------------------------------------------------------------------------
+	Traders functions
+------------------------------------------------------------------------------------------------------]]
+
+--- Function used to spawn items in a specific npc with the help of trader_autoinject.script
+-- function spawn_ammo_crate_in_trader(npc)
+
+    -- local is_supplier = trader_autoinject.get_trader_type(npc) == trader_autoinject.SUPPLIER
+    -- local is_barman = trader_autoinject.get_trader_type(npc) == trader_autoinject.BARMAN
+    -- local is_mechanic = trader_autoinject.get_trader_type(npc) == trader_autoinject.MECHANIC
+
+    -- local community = trader_autoinject.get_real_community(npc, "stalker")
+    -- local supply_level = clamp(trader_autoinject.supply_level(npc, true) or 1, 1, 2)
+
+    -- dbg_printf("[AC] Trader type | is_supplier %s | is_barman %s | is_mechanic %s",is_supplier,is_barman,is_mechanic)
+    -- dbg_printf("[AC] Trader comm | %s",community)
+
+    -- local trader_table = {}
+    -- trader_table["ammo_crate"] = 1
+
+    -- if trader_table and is_mechanic then
+        -- dbg_printf("[AC] Trader table :\n%s", utils_data.print_table(trader_table, false, true))
+        -- trader_autoinject.spawn_items(npc, trader_table, true)
+    -- end
+-- end
+
+--- Monkey-patching trader_autoinject.update to inject the ammo crate in the traders
+-- TraderAuto = trader_autoinject.update
+-- function trader_autoinject.update(npc)
+    -- TraderAuto(npc)
+    -- spawn_ammo_crate_in_trader(npc)
+-- end
+
+
+--[[----------------------------------------------------------------------------------------------------
+	Dead bodies functions
+------------------------------------------------------------------------------------------------------]]
+
+--- Function used to spawn items in a corpse
+function spawn_ammo_crate_in_corpse(npc, npc_rank, npc_comm)
+    if npc_comm == "army" and math.random() < 0.05 then
+        alife_create_item("ammo_crate", npc, {uses = 1})
+    end
+end
+
+--- Monkey-patching death_manager.spawn_cosmetics to spawn the ammo crate
+SpawnCosmetics = death_manager.spawn_cosmetics
+function death_manager.spawn_cosmetics(npc, npc_id, npc_comm, npc_rank, visual, rand_condition)
+    SpawnCosmetics(npc, npc_id, npc_comm, npc_rank, visual, rand_condition)
+    spawn_ammo_crate_in_corpse(npc, npc_rank, npc_comm)
+end
+
+
+--[[----------------------------------------------------------------------------------------------------
+	Service functions
+------------------------------------------------------------------------------------------------------]]
+
+function print_addon_version()
+    UnregisterScriptCallback("on_game_load", print_addon_version)
+    printf("[AC] Ammo Crate version %s",VERSION)
+end
+
+-- function check_trader_auto_inject()
+    -- UnregisterScriptCallback("on_game_load", check_trader_auto_inject)
+
+    -- local error_message = string.format("\n\n%s\n\n%s\n\n%s\n\n%s",
+            -- get_translation("st_ac_err_outdated_trader_autoinject_script_title"),
+            -- get_translation("st_ac_err_outdated_trader_autoinject_script_what"),
+            -- get_translation("st_ac_err_outdated_trader_autoinject_script_why"),
+            -- get_translation("st_ac_err_outdated_trader_autoinject_script_where")
+    -- )
+
+    -- assert(trader_autoinject.get_real_community ~= nil, error_message)
+-- end
+
+--[[----------------------------------------------------------------------------------------------------
+	Callbacks registration
+------------------------------------------------------------------------------------------------------]]
+
+function on_game_start()
+    RegisterScriptCallback("on_game_load", print_addon_version)
+    -- RegisterScriptCallback("on_game_load", check_trader_auto_inject)
+    RegisterScriptCallback("ActorMenu_on_item_before_move", check_move_ammo)
+    RegisterScriptCallback("ActorMenu_on_item_after_move", update_crate_weight)
+    RegisterScriptCallback("save_state", save_state)
+    RegisterScriptCallback("load_state", load_state)
+end
+
+
+--[[----------------------------------------------------------------------------------------------------
+	Data persistence
+------------------------------------------------------------------------------------------------------]]
+
+function save_state(m_data)
+    m_data.AMMO_CRATES = AMMO_CRATES
+    dbg_printf("[AC] Ammo crates saved :\n%s", utils_data.print_table(m_data.AMMO_CRATES, false, true))
+end
+
+function load_state(m_data)
+    AMMO_CRATES = m_data.AMMO_CRATES or {}
+    dbg_printf("[AC] Loaded ammo crates :\n%s", utils_data.print_table(AMMO_CRATES, false, true))
+end
+
+
+--[[----------------------------------------------------------------------------------------------------
+	Special
+------------------------------------------------------------------------------------------------------]]
+
+--- Monkey patch to fix a bug present in vanilla Anomaly
+Base_Action_Move = ui_inventory.UIInventory.Action_Move
+function ui_inventory.UIInventory:Action_Move(obj, bag)
+    obj = self:CheckItem(obj,"Action_Move")
+    if obj then
+        Base_Action_Move(self,obj, bag)
+    end
+end

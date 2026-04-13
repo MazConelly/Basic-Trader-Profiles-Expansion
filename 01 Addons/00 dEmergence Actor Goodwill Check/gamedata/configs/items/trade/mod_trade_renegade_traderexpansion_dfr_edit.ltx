@@ -1,0 +1,10 @@
+; Dynamic Faction Relations Patch
+; requires 'xr_conditions_actor_goodwill_ge_traderexpansion.script'
+
+![trader]
+
+; Original:
+; buy_supplies	= {=actor_goodwill_ge(renegade:2500) =actor_true_community(renegade)}} supplies_6, {=actor_goodwill_ge(renegade:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(renegade:1500)} supplies_4, {=actor_goodwill_ge(bandit:1000)} supplies_3, {=actor_goodwill_ge(renegade:1000)} supplies_3, {=actor_goodwill_ge(bandit:500)} supplies_2, {=actor_goodwill_ge(renegade:500)} supplies_2, supplies_1
+
+; DFR friendly:
+buy_supplies	= {=actor_goodwill_ge(renegade:2500:def) =actor_true_community(renegade)}} supplies_6, {=actor_goodwill_ge(renegade:2000:def)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(renegade:1500:def)} supplies_4, {=actor_goodwill_ge(renegade:1000:xpos)} supplies_3, {=actor_goodwill_ge(renegade:500:xpos)} supplies_2, supplies_1

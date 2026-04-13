@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="windows-1251"?>
+
+<!-- 
+	MCM
+-->
+<string_table>
+
+    <string id="ui_mcm_basic_trader_profiles_expansion_title">
+		<text>Basic Trader Profiles Expansion</text>
+    </string>
+	<string id="ui_mcm_menu_basic_trader_profiles_expansion">
+		<text>Basic Trader Profiles Expansion</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_choice_mode">
+		<text>Aggregate factors choice</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_choice_mode_help">
+		<text>Control how goodwill is weighted in comparative calculations. By default, goodwill with other factions than the trader faction is weighted less so actor would require a higher goodwill value with them to reach the threshold. This can be disabled by modifying the "Apply factor in" settings below.\n
+		-Default: Only compares goodwill with given trader faction against the threshold number. This is the vanilla behavior.\n
+		-Exclusive positive: Finds the highest goodwill with given trader faction -or- factions friendly to it and compares it against the threshold number. Works just as well with or without Dynamics relations enabled.\n
+		-Exclusive negative: Finds the highest goodwill with an enemy to the trader faction and compares it against the threshold number.\n
+		-Exclusive comparative:Finds the highest goodwill with given trader faction -or- factions friendly to it and substracts the highest goodwill with an enemy to the trader faction. The result is compared against the threshold number.\n
+		-Total Positive: Sums up goodwill with given trader faction -and- factions friendly to it and compares the result against the threshold number.\n
+		-Total Negative: Sums up goodwill with factions that are enemy to the trader faction and compares the result against the threshold number.\n
+		-Total Comparative: Sums up goodwill with given trader faction -and- factions friendly to it and substracts goodwill with any faction that is an enemy. The result is compared against the threshold number.\n
+		</text>
+	</string>
+
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_def">
+		<text>Default</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_xpos">
+		<text>Exclusive Positive</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_xneg">
+		<text>Exclusive Negative</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_xcom">
+		<text>Exclusive Comparative</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_pos">
+		<text>Total Positive</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_neg">
+		<text>Total Negative</text>
+	</string>
+	<string id="ui_mcm_lst_ui_mcm_basic_trader_profiles_expansion_com">
+		<text>Total Comparative</text>
+	</string>
+	
+<!-- Weighted Goodwill -->
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_apply_factor_in_aggregate">
+		<text>Apply factor in aggregate</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_apply_factor_in_aggregate_desc">
+		<text>Enable or disable the weighted goodwill factors for specific calculations.\n
+		Enabled by default. Applies to the modes:\n
+		-Total Comparative\n
+		-Total Positive\n
+		-Total Negative</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_apply_factor_in_max_goodwill">
+		<text>Apply factor in max goodwill</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_apply_factor_in_max_goodwill_desc">
+		<text>Enable or disable the weighted goodwill factors for specific calculations.\n
+		Enabled by default. Applies to the modes:\n
+		-Exclusive comparative\n
+		-Exclusive positive\n
+		-Exclusive negative</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_negative_trader_faction_relations_affect_comparative_goodwill">
+		<text>Comparative goodwill affected by negative faction relations</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_negative_trader_faction_relations_affect_comparative_goodwill_desc">
+		<text>Negative relation values between trader faction and neutral faction will (further) affect aggregated goodwill.\n
+		E.G. if a trader's faction has a negative relation with a neutral faction around ~500, why would they care as much about the goodwill you have with them?\n
+		However, at most goodwill is completely negated by this. It will build no negative number due to this setting.</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_weighed_options">
+		<text>Weighted Goodwill Options</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_faction">
+		<text>Trader's faction</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_faction_desc">
+		<text>Control how goodwill with the trader's faction is weighted in comparative calculations.\n
+		</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_friends">
+		<text>Factions allied to the trader's</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_friends_desc">
+		<text>Control how goodwill with allies of the trader's faction is weighted in comparative calculations.</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_neutral">
+		<text>Factions neutral to the trader's</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_neutral_desc">
+		<text>Control how goodwill with factions neutral to the trader's faction is weighted in comparative calculations.</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_enemies">
+		<text>Factions enemy to the trader's</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_factor_enemies_desc">
+		<text>Control how goodwill with enemy factions of the trader's faction is weighted in comparative calculations.</text>
+	</string>
+
+
+<!-- Aggregating Negative Goodwill -->
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_aggregating_options">
+		<text>Aggregating Negative Goodwill Options</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_dismiss_goodwill_value_if_negative_on_add">
+		<text>Dismiss goodwill value if negative on addition</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_dismiss_goodwill_value_if_negative_on_add_desc">
+		<text>Negative goodwill with factions neutral or allied to trader will not decrease total comparative goodwill value.</text>
+	</string>
+
+	<string id="ui_mcm_basic_trader_profiles_expansion_dismiss_goodwill_value_if_negative_on_sub">
+		<text>Dismiss goodwill value if negative on substraction</text>
+	</string>
+	<string id="ui_mcm_basic_trader_profiles_expansion_dismiss_goodwill_value_if_negative_on_sub_desc">
+		<text>Negative goodwill with enemies of trader faction will not increase total comparative goodwill value.</text>
+	</string>
+
+</string_table>

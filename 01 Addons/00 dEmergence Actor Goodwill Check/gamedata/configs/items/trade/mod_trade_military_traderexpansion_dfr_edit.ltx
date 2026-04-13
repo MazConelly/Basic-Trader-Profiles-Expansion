@@ -1,0 +1,10 @@
+; Dynamic Faction Relations Patch
+; requires 'xr_conditions_actor_goodwill_ge_traderexpansion.script'
+
+![trader]
+
+; Original:
+; buy_supplies	= {=actor_goodwill_ge(army:2500) =actor_true_community(army)} supplies_6, {=actor_goodwill_ge(army:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(army:1500)} supplies_4, {=actor_goodwill_ge(dolg:1000)} supplies_3, {=actor_goodwill_ge(ecolog:1000)} supplies_3, {=actor_goodwill_ge(army:1000)} supplies_3, {=actor_goodwill_ge(dolg:500)} supplies_2, {=actor_goodwill_ge(ecolog:500)} supplies_2, {=actor_goodwill_ge(army:500)} supplies_2, supplies_1
+
+; DFR friendly:
+buy_supplies	= {=actor_goodwill_ge(army:2500:def) =actor_true_community(army)} supplies_6, {=actor_goodwill_ge(army:2000:def)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(army:1500:def)} supplies_4, {=actor_goodwill_ge(army:1000:xpos)} supplies_3, {=actor_goodwill_ge(army:500:xpos)} supplies_2, supplies_1

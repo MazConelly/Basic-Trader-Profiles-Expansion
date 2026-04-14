@@ -2,8 +2,8 @@
 ==============================================================================================================================
 -- 				Actor Goodwill Greater or Equal Condition Extension for Basic Trader Profiles Expansion 					--
 ==============================================================================================================================
-Version:	1.0.1
-Authors: 	dEmergence
+Version:	1.1.0
+Authors: 	dEmergence, MazConnelly
 ------------------------------------------------------------------------------------------------------------------------------
 
 Allows changes to the way the "actor_goodwill_ge" function works by modifying the default 
@@ -127,17 +127,7 @@ Additional Parameters Examples:
 
 -- local default_mode = "xpos" -- recommended for default_mode: xpos, xcom, def
 
-local mode_choices = {
-	[0] = "def",
-	[1] = "xpos",
-	[2] = "xneg",
-	[3] = "xcom",
-	[4] = "pos",
-	[5] = "neg",
-	[6] = "com",
-}
-
-local default_mode = mode_choices[tonumber(basic_trader_profiles_expansion_mcm.script.get_config("choice_mode"))] or "def"
+local default_mode = tonumber(basic_trader_profiles_expansion_mcm.get_config("choice_mode"))
 
 --[[ Weighted Goodwill ]]--
 
@@ -146,35 +136,35 @@ local default_mode = mode_choices[tonumber(basic_trader_profiles_expansion_mcm.s
 -- local factor_friends = 1.00 -- goodwill with allies of the trader
 -- local factor_neutral = 1.00 -- goodwill with factions neutral to trader faction
 -- local factor_enemies = 1.00 -- goodwill with enemy factions of trader faction
-local factor_faction = (basic_trader_profiles_expansion_mcm.script.get_config("factor_faction"))
-local factor_friends = (basic_trader_profiles_expansion_mcm.script.get_config("factor_friends"))
-local factor_neutral = (basic_trader_profiles_expansion_mcm.script.get_config("factor_neutral"))
-local factor_enemies = (basic_trader_profiles_expansion_mcm.script.get_config("factor_enemies"))
+local factor_faction = (basic_trader_profiles_expansion_mcm.get_config("factor_faction"))
+local factor_friends = (basic_trader_profiles_expansion_mcm.get_config("factor_friends"))
+local factor_neutral = (basic_trader_profiles_expansion_mcm.get_config("factor_neutral"))
+local factor_enemies = (basic_trader_profiles_expansion_mcm.get_config("factor_enemies"))
 
 -- You can disable the weighted goodwill factors for specific calculations here:
 -- local apply_factor_in = {
 	-- ["aggregate"] = true, -- used by modes: com, pos and neg
 	-- ["max_goodwill"] = true, -- used by modes: xcom, xpos and xneg
 -- }
-local apply_factor_in_aggregate = (basic_trader_profiles_expansion_mcm.script.get_config("apply_factor_in_aggregate"))
-local apply_factor_in_max_goodwill = (basic_trader_profiles_expansion_mcm.script.get_config("apply_factor_in_max_goodwill"))
+local apply_factor_in_aggregate = (basic_trader_profiles_expansion_mcm.get_config("apply_factor_in_aggregate"))
+local apply_factor_in_max_goodwill = (basic_trader_profiles_expansion_mcm.get_config("apply_factor_in_max_goodwill"))
 
 -- negative relation values between trader faction and neutral faction will (further) affect aggregated goodwill
 -- e.g. if trader faction has a negative relation with a neutral faction around -500 why would they care as much about the goodwill you have with them?
 -- However, at most goodwill is completely negated by this. It will build no negative number due to this setting.
 -- local negative_trader_faction_relations_affect_comparative_goodwill = true
-local negative_trader_faction_relations_affect_comparative_goodwill = (basic_trader_profiles_expansion_mcm.script.get_config("negative_trader_faction_relations_affect_comparative_goodwill"))
+local negative_trader_faction_relations_affect_comparative_goodwill = (basic_trader_profiles_expansion_mcm.get_config("negative_trader_faction_relations_affect_comparative_goodwill"))
 
 
 --[[ Aggregating Negative Goodwill ]]--
 
 -- neg. goodwill with factions neutral or allied to trader will not -decrease- total comparative goodwill value:
 -- local dismiss_goodwill_value_if_negative_on_add = false
-local dismiss_goodwill_value_if_negative_on_add = (basic_trader_profiles_expansion_mcm.script.get_config("dismiss_goodwill_value_if_negative_on_add"))
+local dismiss_goodwill_value_if_negative_on_add = (basic_trader_profiles_expansion_mcm.get_config("dismiss_goodwill_value_if_negative_on_add"))
 
 -- neg. goodwill with enemies of trader faction will not -increase- total comparative goodwill value:
 -- local dismiss_goodwill_value_if_negative_on_sub = false
-local dismiss_goodwill_value_if_negative_on_sub = (basic_trader_profiles_expansion_mcm.script.get_config("dismiss_goodwill_value_if_negative_on_sub"))
+local dismiss_goodwill_value_if_negative_on_sub = (basic_trader_profiles_expansion_mcm.get_config("dismiss_goodwill_value_if_negative_on_sub"))
 
 
 
@@ -252,7 +242,7 @@ function aggregate(trader_faction, mode)
 			if is_factions_enemies(trader_faction, factions_table[i]) then
 				if (mode ~= "positive") then
 					-- local enemy_factor = (apply_factor_in["aggregate"]) and factor_enemies or 1
-					local enemy_factor = (apply_factor_in_aggregate = true) and factor_enemies or 1
+					local enemy_factor = (apply_factor_in_aggregate == true) and factor_enemies or 1
 					if (mode == "comparative") then
 						goodwill_total = goodwill_total - (sub_gw * enemy_factor)
 					elseif (mode == "negative") then
@@ -264,7 +254,7 @@ function aggregate(trader_faction, mode)
 				local rel_reduction = (negative_trader_faction_relations_affect_comparative_goodwill and (rel_value < 0) and (gw > 0)) and rel_value or 0
 				local factor = (factions_table[i] == trader_faction) and factor_faction or is_factions_friends(trader_faction, factions_table[i]) and factor_friends or factor_neutral
 				-- local friendly_factor = (apply_factor_in["aggregate"]) and factor or 1
-				local friendly_factor = (apply_factor_in_aggregate = true) and factor or 1
+				local friendly_factor = (apply_factor_in_aggregate == true) and factor or 1
 				goodwill_total = goodwill_total + math_max(((add_gw * friendly_factor) + rel_reduction),0)
 			end
 		end
@@ -282,7 +272,7 @@ function max_goodwill(trader_faction, mode)
 			if is_factions_enemies(trader_faction, factions_table[i]) then
 				if (mode == "enemies") then
 					-- local enemy_factor = (apply_factor_in["max_goodwill"]) and factor_enemies or 1
-					local enemy_factor = (apply_factor_in_max_goodwill = true) and factor_enemies or 1
+					local enemy_factor = (apply_factor_in_max_goodwill == true) and factor_enemies or 1
 					local enemy_gw = gw * enemy_factor
 					if (enemy_gw > goodwill_max) then
 						goodwill_max = enemy_gw
@@ -293,7 +283,7 @@ function max_goodwill(trader_faction, mode)
 				local rel_reduction = (negative_trader_faction_relations_affect_comparative_goodwill and (rel_value < 0) and (gw > 0)) and rel_value or 0
 				local factor = (factions_table[i] == trader_faction) and factor_faction or is_factions_friends(trader_faction, factions_table[i]) and factor_friends or factor_neutral
 				-- local friendly_factor = (apply_factor_in["max_goodwill"]) and factor or 1
-				local friendly_factor = (apply_factor_in_max_goodwill = true) and factor or 1
+				local friendly_factor = (apply_factor_in_max_goodwill == true) and factor or 1
 				local friendly_gw = gw * friendly_factor + rel_reduction
 				if (friendly_gw > goodwill_max) then
 					goodwill_max = friendly_gw

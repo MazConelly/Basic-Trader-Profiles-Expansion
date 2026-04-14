@@ -4,7 +4,7 @@
 [trader]
 buy_condition	= trade_generic_buy
 sell_condition	= trade_generic_sell
-buy_supplies	= {=actor_goodwill_ge(stalker:2500) =actor_true_community(stalker)} supplies_6, {=actor_goodwill_ge(stalker:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(stalker:1500)} supplies_4, {=actor_goodwill_ge(csky:1500)} supplies_4, {=actor_goodwill_ge(ecolog:1500)} supplies_4, {=actor_goodwill_ge(freedom:1500)} supplies_4, {=actor_goodwill_ge(dolg:1500)} supplies_4, {=actor_goodwill_ge(stalker:1000)} supplies_3, {=actor_goodwill_ge(csky:1000)} supplies_3, {=actor_goodwill_ge(ecolog:1000)} supplies_3, {=actor_goodwill_ge(freedom:1000)} supplies_3, {=actor_goodwill_ge(dolg:1000)} supplies_3, {=actor_goodwill_ge(stalker:500)} supplies_2, {=actor_goodwill_ge(csky:500)} supplies_2, {=actor_goodwill_ge(ecolog:500)} supplies_2, {=actor_goodwill_ge(freedom:500)} supplies_2, {=actor_goodwill_ge(dolg:500)} supplies_2, supplies_1
+buy_supplies	= {=actor_goodwill_ge(stalker:2500) =actor_true_community(stalker)} supplies_6, {=actor_goodwill_ge(stalker:2500)} supplies_6, {=actor_goodwill_ge(stalker:2000) =actor_true_community(stalker)} supplies_5_member, {=actor_goodwill_ge(stalker:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(stalker:1500) =actor_community(stalker)} supplies_4_member, {=actor_goodwill_ge(stalker:1500)} supplies_4, {=actor_goodwill_ge(csky:1500)} supplies_4, {=actor_goodwill_ge(ecolog:1500)} supplies_4, {=actor_goodwill_ge(freedom:1500)} supplies_4, {=actor_goodwill_ge(dolg:1500)} supplies_4, {=actor_goodwill_ge(stalker:1000) =actor_community(stalker)} supplies_3_member, {=actor_goodwill_ge(stalker:1000)} supplies_3, {=actor_goodwill_ge(csky:1000)} supplies_3, {=actor_goodwill_ge(ecolog:1000)} supplies_3, {=actor_goodwill_ge(freedom:1000)} supplies_3, {=actor_goodwill_ge(dolg:1000)} supplies_3, {=actor_goodwill_ge(stalker:500) =actor_community(stalker)} supplies_2_member, {=actor_goodwill_ge(stalker:500)} supplies_2, {=actor_goodwill_ge(csky:500)} supplies_2, {=actor_goodwill_ge(ecolog:500)} supplies_2, {=actor_goodwill_ge(freedom:500)} supplies_2, {=actor_goodwill_ge(dolg:500)} supplies_2, supplies_1
 buy_item_condition_factor	= 0.50
 buy_item_exponent	= 2.25
 sell_item_exponent	= 0.75
@@ -14,6 +14,11 @@ discounts	= discount_trasher
 [trade_generic_buy]:trasher
 
 [trade_generic_sell]:trasher
+
+;use these two supplies sections to add items you want only faction member players to get
+[supplies_member_low]
+
+[supplies_member_high]
 
 [supplies_1]:common_stock
 ;[Pistols]
@@ -209,6 +214,8 @@ equ_small_pack				= 1,1
 detector_advanced			= 2,1
 device_torch_nv_1			= 1,1
 
+[supplies_2_member]:supplies_2,supplies_member_low
+
 [supplies_3]:supplies_2
 ;[Pistols]
 wpn_oc33					= 1,1
@@ -240,6 +247,8 @@ equ_small_military_pack		= 1,1
 device_torch_nv_2			= 1,1
 device_pda_2				= 1,1
 
+[supplies_3_member]:supplies_3,supplies_member_low
+
 [supplies_4]:supplies_3
 ;[Melee]
 wpn_knife5					= 1,1
@@ -252,8 +261,15 @@ detector_elite				= 1,1
 device_pda_3				= 1,1
 device_torch_nv_3			= 1,1
 
+[supplies_4_member]:supplies_4,supplies_member_high
+
 [supplies_5]:supplies_4
 ;[Backpacks]
 equ_tourist_pack			= 1,1
 
+[supplies_5_member]:supplies_5,supplies_member_high
+
+;use this supplies_6 section for items you want players to really work for
 [supplies_6]:supplies_5
+
+[supplies_6_member]:supplies_6,supplies_member_high

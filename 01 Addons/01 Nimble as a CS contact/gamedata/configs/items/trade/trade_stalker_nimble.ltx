@@ -4,7 +4,7 @@
 [trader]
 buy_condition	= trade_generic_buy
 sell_condition	= trade_generic_sell
-buy_supplies	= {=actor_goodwill_ge(csky:2500) =actor_true_community(csky)} supplies_6, {=actor_goodwill_ge(csky:2000) =actor_true_community(csky)} supplies_5, {=heavy_pockets_functor() =actor_true_community(csky)} supplies_5, {=actor_goodwill_ge(csky:1500) =actor_true_community(csky)} supplies_4, {=actor_goodwill_ge(csky:1000) =actor_true_community(csky)} supplies_3, {=actor_goodwill_ge(csky:500) =actor_true_community(csky)} supplies_2, { =actor_true_community(csky)} supplies_1_cs, supplies_1
+buy_supplies	= {=actor_goodwill_ge(csky:2500) =actor_true_community(csky)} supplies_6, {=actor_goodwill_ge(csky:2000) =actor_true_community(csky)} supplies_5, {=heavy_pockets_functor() =actor_true_community(csky)} supplies_5, {=actor_goodwill_ge(csky:1500) =actor_true_community(csky)} supplies_4, {=actor_goodwill_ge(csky:1000) =actor_true_community(csky)} supplies_3, {=actor_goodwill_ge(csky:500) =actor_true_community(csky)} supplies_2, {=actor_true_community(csky)} supplies_1_cs, supplies_1
 buy_item_condition_factor	= 0.50
 buy_item_exponent	= 2.25
 sell_item_exponent	= 0.75
@@ -36,6 +36,12 @@ wpn_toz34_bull				= 1,1
 novice_outfit_tourist		= 1,1
 wpn_wa2000					= 1,1
 ammo_12x76_bull				= 1,1
+
+;use these two supplies sections to add items you want only faction member players to get
+[supplies_member_low]
+
+[supplies_member_high]
+
 
 [supplies_1]:common_stock
 ;[Pistols]
@@ -105,7 +111,7 @@ af_kevlar					= 1,1
 af_plates					= 1,1
 af_surge					= 1,1
 
-[supplies_2]:supplies_1_cs
+[supplies_2]:supplies_1_cs,supplies_member_low
 ;[Rifle]
 wpn_ak74					= 1,1
 wpn_ak74u					= 1,1
@@ -148,7 +154,7 @@ af_iam						= 1,1
 detector_advanced			= 2,1
 device_torch_nv_1			= 1,1
 
-[supplies_3]:supplies_2
+[supplies_3]:supplies_2,supplies_member_low
 ;[Pistols]
 wpn_gsh18					= 1,1
 wpn_oc33					= 1,1
@@ -189,7 +195,7 @@ af_aac						= 1,1
 device_torch_nv_2			= 1,1
 device_pda_2				= 1,1
 
-[supplies_4]:supplies_3
+[supplies_4]:supplies_3,supplies_member_low
 ;[Rifle]
 wpn_ak105					= 1,1
 wpn_val						= 1,1
@@ -220,7 +226,7 @@ detector_elite				= 1,1
 device_torch_nv_3			= 1,1
 device_pda_3				= 1,1
 
-[supplies_5]:supplies_4
+[supplies_5]:supplies_4,supplies_member_high
 ;[Rifle]
 wpn_ak74m_alt				= 1,1
 wpn_svd						= 1,1
@@ -250,4 +256,5 @@ af_kevlar_up				= 1,1
 af_plates_up				= 1,1
 af_surge_up					= 1,1
 
-[supplies_6]:supplies_5
+;use this supplies_6 section for items you want players to really work for
+[supplies_6]:supplies_5,supplies_member_high

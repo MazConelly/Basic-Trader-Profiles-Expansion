@@ -1,3 +1,19 @@
+local defaults = {
+	["choice_mode"] = 1,
+	
+	["factor_faction"] = 1.00,
+	["factor_friends"] = 1.00,
+	["factor_neutral"] = 0.75,
+	["factor_enemies"] = 1.00,
+	
+	["apply_factor_in_aggregate"] = true,
+	["apply_factor_in_max_goodwill"] = true,
+	["negative_trader_faction_relations_affect_comparative_goodwill"] = true,
+	
+	["dismiss_goodwill_value_if_negative_on_add"] = false,
+	["dismiss_goodwill_value_if_negative_on_sub"] = false,
+}
+
 function get_config(key)
     if ui_mcm then return ui_mcm.get("basic_trader_profiles_expansion/"..key) else return defaults[key] end
 end
@@ -7,7 +23,7 @@ function on_mcm_load()
 		id= "basic_trader_profiles_expansion", sh=true, gr={
 			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_title",size= {512,50},spacing= 20 },
 
-			{id = "choice_mode", type = "list", val = 2, def=1, content= {
+			{id = "choice_mode", type = "list", val = 2, def = defaults["choice_mode"], content= {
 				{0, "ui_mcm_basic_trader_profiles_expansion_def"},
 				{1, "ui_mcm_basic_trader_profiles_expansion_xpos"},
 				{2, "ui_mcm_basic_trader_profiles_expansion_xneg"},
@@ -22,21 +38,21 @@ function on_mcm_load()
 			-- {id = "divider", type = "line"},
 			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_weighed_options",size= {512,50},spacing= 20 },
 
-			{ id = "negative_trader_faction_relations_affect_comparative_goodwill", type = "check", val = 1, def = true },
+			{ id = "negative_trader_faction_relations_affect_comparative_goodwill", type = "check", val = 1, def = defaults["negative_trader_faction_relations_affect_comparative_goodwill"] },
 
-			{ id = "apply_factor_in_aggregate", type = "check", val = 1, def = true },
-			{ id = "apply_factor_in_max_goodwill", type = "check", val = 1, def = true },
+			{ id = "apply_factor_in_aggregate", type = "check", val = 1, def = defaults["apply_factor_in_aggregate"] },
+			{ id = "apply_factor_in_max_goodwill", type = "check", val = 1, def = defaults["apply_factor_in_max_goodwill"] },
 
-			{ id = "factor_faction", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 1.00 },
-			{ id = "factor_friends", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 0.75 },
-			{ id = "factor_neutral", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 0.50 },
-			{ id = "factor_enemies", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = 1.00 },
+			{ id = "factor_faction", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = defaults["factor_faction"] },
+			{ id = "factor_friends", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = defaults["factor_friends"] },
+			{ id = "factor_neutral", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = defaults["factor_neutral"] },
+			{ id = "factor_enemies", type = "track", val = 2, min = 0.01, max = 1.00, step = 0.05, def = defaults["factor_enemies"] },
 
 			-- {id = "divider", type = "line"},
 			{id= "title",type= "slide",link= "ui_options_slider_player",text="ui_mcm_basic_trader_profiles_expansion_aggregating_options",size= {512,50},spacing= 20 },
 			
-			{ id = "dismiss_goodwill_value_if_negative_on_add", type = "check", val = 1, def = false },
-			{ id = "dismiss_goodwill_value_if_negative_on_sub", type = "check", val = 1, def = false },
+			{ id = "dismiss_goodwill_value_if_negative_on_add", type = "check", val = 1, def = defaults["dismiss_goodwill_value_if_negative_on_add"] },
+			{ id = "dismiss_goodwill_value_if_negative_on_sub", type = "check", val = 1, def = defaults["dismiss_goodwill_value_if_negative_on_sub"] },
 		}
 	}
 

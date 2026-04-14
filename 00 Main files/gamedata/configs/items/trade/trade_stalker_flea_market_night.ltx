@@ -4,7 +4,7 @@
 [trader]
 buy_condition	= trade_generic_buy
 sell_condition	= trade_generic_sell
-buy_supplies	= {=actor_goodwill_ge(stalker:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(stalker:1500)} supplies_4, {=actor_goodwill_ge(csky:1500)} supplies_4, {=actor_goodwill_ge(ecolog:1500)} supplies_4, {=actor_goodwill_ge(freedom:1500)} supplies_4, {=actor_goodwill_ge(dolg:1500)} supplies_4, {=actor_goodwill_ge(stalker:1000)} supplies_3, {=actor_goodwill_ge(csky:1000)} supplies_3, {=actor_goodwill_ge(ecolog:1000)} supplies_3, {=actor_goodwill_ge(freedom:1000)} supplies_3, {=actor_goodwill_ge(dolg:1000)} supplies_3, {=actor_goodwill_ge(stalker:500)} supplies_2, {=actor_goodwill_ge(csky:500)} supplies_2, {=actor_goodwill_ge(ecolog:500)} supplies_2, {=actor_goodwill_ge(freedom:500)} supplies_2, {=actor_goodwill_ge(dolg:500)} supplies_2, supplies_1
+buy_supplies	= {=actor_goodwill_ge(stalker:2000) =actor_true_community(stalker)} supplies_5_member, {=actor_goodwill_ge(stalker:2000)} supplies_5, {=heavy_pockets_functor()} supplies_5, {=actor_goodwill_ge(stalker:1500) =actor_community(stalker)} supplies_4_member, {=actor_goodwill_ge(stalker:1500)} supplies_4, {=actor_goodwill_ge(csky:1500)} supplies_4, {=actor_goodwill_ge(ecolog:1500)} supplies_4, {=actor_goodwill_ge(freedom:1500)} supplies_4, {=actor_goodwill_ge(dolg:1500)} supplies_4, {=actor_goodwill_ge(stalker:1000) =actor_community(stalker)} supplies_3_member, {=actor_goodwill_ge(stalker:1000)} supplies_3, {=actor_goodwill_ge(csky:1000)} supplies_3, {=actor_goodwill_ge(ecolog:1000)} supplies_3, {=actor_goodwill_ge(freedom:1000)} supplies_3, {=actor_goodwill_ge(dolg:1000)} supplies_3, {=actor_goodwill_ge(stalker:500) =actor_community(stalker)} supplies_2_member, {=actor_goodwill_ge(stalker:500)} supplies_2, {=actor_goodwill_ge(csky:500)} supplies_2, {=actor_goodwill_ge(ecolog:500)} supplies_2, {=actor_goodwill_ge(freedom:500)} supplies_2, {=actor_goodwill_ge(dolg:500)} supplies_2, supplies_1
 buy_item_condition_factor	= 0.50
 buy_item_exponent	= 2.25
 sell_item_exponent	= 0.75
@@ -27,6 +27,11 @@ af_mincer_meat				= 1.75,1.75
 af_medusa					= 1.75,1.75
 af_night_star				= 1.75,1.75
 af_gravi					= 1.75,1.75
+
+;use these two supplies sections to add items you want only faction member players to get
+[supplies_member_low]
+
+[supplies_member_high]
 
 [supplies_1]:common_stock
 ;[Artefacts]
@@ -142,8 +147,14 @@ compression_bag				= 1,1
 
 [supplies_2]:supplies_1
 
+[supplies_2_member]:supplies_2,supplies_member_low
+
 [supplies_3]:supplies_2
 
+[supplies_3_member]:supplies_3,supplies_member_low
+
 [supplies_4]:supplies_3
+
+[supplies_4_member]:supplies_4,supplies_member_high
 
 [supplies_5]:supplies_4

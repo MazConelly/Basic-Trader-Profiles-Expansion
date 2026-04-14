@@ -7,4 +7,6 @@
 ; buy_supplies	= {=actor_goodwill_ge(killer:1000)} supplies3, {=actor_goodwill_ge(isg:1000)} supplies_3, {=heavy_pockets_functor()} supplies_3, {=actor_goodwill_ge(killer:500)} supplies_2, {=actor_goodwill_ge(isg:500)} supplies_2, supplies_1
 
 ; DFR friendly:
-buy_supplies	= {=actor_goodwill_ge(isg:1000:xpos)} supplies_3, {=heavy_pockets_functor()} supplies_3, {=actor_goodwill_ge(isg:500:xpos)} supplies_2, supplies_1
+; buy_supplies	= {=actor_goodwill_ge(isg:1000:xpos)} supplies_3, {=heavy_pockets_functor()} supplies_3, {=actor_goodwill_ge(isg:500:xpos)} supplies_2, supplies_1
+
+buy_supplies	= {=actor_goodwill_ge(isg:1000:xpos) =actor_community(isg)} supplies_3_member, {=actor_goodwill_ge(isg:1000:xpos)} supplies_3, {=actor_goodwill_ge(isg:500:xpos) =actor_community(isg)} supplies_2_member, {=actor_goodwill_ge(isg:500:xpos)} supplies_2, supplies_1

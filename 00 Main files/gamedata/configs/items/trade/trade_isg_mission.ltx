@@ -15,6 +15,11 @@ discounts	= discount_isg_mission
 
 [trade_generic_sell]:merchant
 
+;use these two supplies sections to add items you want only faction member players to get
+[supplies_member_low]
+
+[supplies_member_high]
+
 [supplies_1]:common_stock
 ;[Pistols]
 wpn_aps					= 1,1
@@ -385,6 +390,8 @@ grooming				= 2,1
 leatherman_tool			= 2,1
 steel_wool				= 2,1
 
+[supplies_2_member]:supplies_2,supplies_member_low
+
 [supplies_3]:supplies_2
 ;[Pistols]
 wpn_beretta_camo		= 1,1
@@ -486,6 +493,8 @@ grooming				= 3,1
 leatherman_tool			= 2,1
 steel_wool				= 3,1
 
+[supplies_3_member]:supplies_3,supplies_member_low
+
 [supplies_4]:supplies_3
 ;[Rifle]
 wpn_vz61_camo			= 1,1
@@ -524,6 +533,8 @@ equ_military_pack		= 1,1
 detector_elite			= 1,1
 device_torch_nv_3		= 1,1
 device_pda_3			= 1,1
+
+[supplies_4_member]:supplies_4,supplies_member_high
 
 [supplies_5]:supplies_4
 ;[Pistols]
@@ -620,4 +631,9 @@ grooming				= 4,1
 leatherman_tool			= 2,1
 steel_wool				= 4,1
 
+[supplies_5_member]:supplies_5,supplies_member_high
+
+;use this supplies_6 section for items you want players to really work for
 [supplies_6]:supplies_5
+
+[supplies_6_member]:supplies_6,supplies_member_high

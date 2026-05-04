@@ -1,0 +1,169 @@
+function on_game_start()
+    RegisterScriptCallback("on_specific_character_init", function(character_id, data)
+
+	if data.community == ("army") then
+		if data.class == ("sim_default_military_0") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_military_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_military_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_military_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_military_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("bandit") then
+		if data.class == ("sim_default_bandit_0") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_bandit_1") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_bandit_2") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_bandit_3") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_bandit_4") then
+            data.money_max = "7000"
+		end
+	if data.community == ("csky") then
+		if data.class == ("sim_default_csky_0") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_csky_1") then
+            data.money_max = "4500"
+		elseif data.class == ("sim_default_csky_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_csky_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_csky_4") then
+            data.money_max = "12000"
+		end
+	if data.community == ("dolg") then
+		if data.class == ("sim_default_duty_0") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_duty_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_duty_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_duty_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_duty_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("ecolog") then
+		if data.class == ("sim_default_ecolog_0") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_ecolog_01") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_ecolog_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_ecolog_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_ecolog_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_ecolog_4") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_ecolog_5") then
+            data.money_max = "7000"
+		end
+	elseif data.community == ("freedom") then
+		if data.class == ("sim_default_freedom_0") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_freedom_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_freedom_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_freedom_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_freedom_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("greh") then
+		if data.class == ("sim_default_greh_0") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_greh_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_greh_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_greh_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_greh_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("isg") then
+		if data.class == ("sim_default_isg_0") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_isg_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_isg_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_isg_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_isg_4") then
+            data.money_max = "12000"
+		elseif data.class == ("sim_default_isg_5") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("killer") then
+		if data.class == ("sim_default_killer_0") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_killer_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_killer_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_killer_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_killer_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("monolith") then
+		if data.class == ("sim_default_monolith_0") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_monolith_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_monolith_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_monolith_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_monolith_4") then
+            data.money_max = "12000"
+		end
+	elseif data.community == ("renegade") then
+		if data.class == ("sim_default_renegade_0") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_renegade_1") then
+            data.money_max = "4000"
+		elseif data.class == ("sim_default_renegade_2") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_renegade_3") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_renegade_4") then
+            data.money_max = "7000"
+		end
+	end
+	elseif data.community == ("stalker") then
+		if data.class == ("sim_default_stalker_0") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_stalker_1") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_stalker_2") then
+            data.money_max = "5500"
+		elseif data.class == ("sim_default_stalker_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_stalker_4") then
+            data.money_max = "12000"
+		end
+	end
+	elseif data.community == ("zombied") then
+		if data.class == ("sim_default_zombied_1") then
+            data.money_max = "3500"
+		elseif data.class == ("sim_default_zombied_2") then
+            data.money_max = "5000"
+		elseif data.class == ("sim_default_zombied_3") then
+            data.money_max = "7000"
+		elseif data.class == ("sim_default_zombied_4") then
+            data.money_max = "12000"
+		end
+	end
+
+    end)
+end

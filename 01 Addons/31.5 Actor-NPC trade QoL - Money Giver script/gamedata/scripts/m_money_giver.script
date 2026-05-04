@@ -1,0 +1,20 @@
+-- Authors: xcvb & Mumuskeh
+-- Date: 14.05.2025
+
+function ActorMenu_on_before_init_mode(mode, t, npc)
+    if mode ~= "trade" then return end										-- checks if trade mode is active
+    if not (npc.alive and npc:alive() and IsStalker(npc)) then return end	-- searches for valid NPC
+    if npc:has_info("custom_money_given") then return end					-- prevents handing out money more than once per NPC
+
+-- 50% chance to hand out between 0 and 1000 rubles | 50% chance to hand out 2000 rubles
+	if math.random() < 0.5 then 
+		npc:give_money(math.random(0,1000))
+	else
+		npc:give_money(2000)
+	end	
+	npc:give_info_portion("custom_money_given")								-- "we gave money to this NPC, so next time he will not receive any"
+end
+
+function on_game_start()
+    RegisterScriptCallback("ActorMenu_on_before_init_mode", ActorMenu_on_before_init_mode)
+end

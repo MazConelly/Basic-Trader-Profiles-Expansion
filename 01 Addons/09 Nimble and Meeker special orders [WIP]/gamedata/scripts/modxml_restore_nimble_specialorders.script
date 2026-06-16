@@ -1,0 +1,15 @@
+function on_game_start()
+    RegisterScriptCallback("on_specific_character_dialog_list", function(character_id, dialog_list)
+
+		if character_id == "esc_2_12_stalker_nimble" then
+            local res = dialog_list:first("esc_2_12_stalker_nimble_get_order")
+            local res = dialog_list:first("esc_2_12_stalker_nimble_place_order")
+
+            if res then
+                printf("adding dialog %s for %s, pos %s", "esc_2_12_stalker_nimble_place_order", character_id, res)
+                printf("adding dialog %s for %s, pos %s", "esc_2_12_stalker_nimble_get_order", character_id, res)
+            end
+        end
+
+    end)
+end

@@ -1,0 +1,44 @@
+; section name can be anything as long as it is unique
+[lewd_lewd_saf]
+loadout_sec = monolith_novice_primary
+; this is the section of weapons in wep_importer we want to add
+weapons_sec = lewd_saf
+; !!!! This will override vanilla loadouts in npc_loadouts.ltx. Use if you want to completely redefine what an NPC class can use. 
+; If ANY of these sections passes this as true, it will apply for this loadout section. 
+ignore_vanilla = false
+
+
+[lewd_lewd_saf_monolith]:lewd_lewd_saf
+loadout_sec = monolith_veteran_primary, monolith_master_primary
+
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_csky]:lewd_lewd_saf_monolith
+loadout_sec = csky_master_primary
+
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_freedom]:lewd_lewd_saf_monolith
+loadout_sec = freedom_veteran_primary, freedom_master_primary
+
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_stalker]:lewd_lewd_saf_monolith
+loadout_sec = master_primary, stalker_expert_primary
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_ecolog]:lewd_lewd_saf_monolith
+loadout_sec = ecolog_merc_primary
+
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_killer]:lewd_lewd_saf_monolith
+loadout_sec = killer_veteran_primary, killer_master_primary
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_greh]:lewd_lewd_saf_monolith
+loadout_sec = greh_experienced_primary, greh_veteran_primary, greh_master_primary
+;-----------------------------------------------------------------------
+
+[lewd_lewd_saf_isg]:lewd_lewd_saf_monolith
+loadout_sec = isg_master_primary, isg_primary

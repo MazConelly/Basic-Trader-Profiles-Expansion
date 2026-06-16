@@ -2610,7 +2610,7 @@ function is_trade_accept(a,b)
 --]]	
 	return ((npc_items or init_items) and true or false)
 end
--- function is_not_trade_accept(a,b)
+function is_not_trade_accept(a,b)
 	-- local npc = who_is_npc(a, b)
 	-- local id = npc:id()
 	

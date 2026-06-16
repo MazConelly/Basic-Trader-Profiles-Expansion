@@ -1,0 +1,65 @@
+Restores Nimble's special ordering dialogue. Like in CoP, you'll ask for a type of object, then Nimble will come back with a random object of the type you ask, that you may refuse but Nimble will take note and raise the price of the next order.
+You may still trade "normally" with Nimble, but all the unique weapons will be obtained only though the orders. This also count for Meeker, who won't offer these weapons anymore. However he will offer rare/expensive but not unique weapons. In some cases these overlap with Nimble, in case you can talk with the one but not the other.
+
+Meeker still offers Merc, Monolith and Bandit exoskeletons, but now also the respective nosorogs. Meanwhile, Nimble will offer neutral, Army, and Ecologist ones (on the basis that these can be acquired straight out of the manufacturers and the Army is hostile anyway, while trying to find exos from the other established factions could anger and cause a business loss.
+
+However prices will be tweaked, as currently those are basically a cheat code; they're basically the CoP prices. Sure, one day waiting, but you're able to get those outfits without goodwill grind, that's already a good deal by itself.
+Starting from the basic item value, there will be modifyiers depending on item type. Items ordered to Meeker add them as increases, due to to ordering them expressely and remoteness of location. Nimble, by bringing them to you randomly and relatively more quiet location, will instead reduce the prices. If the gun is unique, it will have an extra increase to compensate for Nimble's discount.
+
+
+
+					OG		Value	|			Meeker			|			Nimble
+=Pistols	                        |	                        |	
+-DE Steppe Eagle	8k		25880	|							|	25880-1000+5000	= 29880
+-SIG 220 Alpine		6500	18560	|	18560+1000	= 19560		|	18560-1000		= 17560
+-USP March	 		7k		17690	|							|	17690-1000+5000	= 21690
+									|							|	
+=Shotguns and SMGs	                |	                        |	
+-MP5 Frasier		9500	28950	|	28950+3000	= 31950		|	28950-3000		= 25950
+-SPAS Carabiner 	11k		34860	|	34860+4000	= 38860		|	34860-4000		= 30860
+-Protecta			17k		32680	|	32680+4000	= 36680		|	32680-4000		= 28680
+									|							|	
+=Rifles	                            |	                        |	
+-Groza Storm		19k		38580	|	38580+5000	= 43580		|	38580-5000		= 33580
+-G36				14k		66919	|	66919+5000	= 71919		|	66919-5000		= 61919
+-F2000				17k		48550	|	48550+5000	= 53550		|	48550-5000		= 43550
+-Vintorez Tide		20k		51850	|	51850-5000	= 46850		|	51850-5000		= 46850
+-SVU2-A Max			24k		48580	|	48580+7000	= 55580		|	48580-7000		= 41580
+-SVD Lynx			18k		55880	|				 			|	55880-7000+5000	= 53880
+-Gauss				150k	85860	|	85860+10000	= 95860		|	85860-10000		= 75860
+*FAMAS						44900	|	44900+5000	= 49900		|	44900-5000		= 39900
+*XM8						43880	|	43880+5000	= 48880		|	43880-5000		= 38880
+									|				 			|	
+=Seva	                            |	            	        |	
+-mono						73400	|	73400+10000	= 83400		|	
+*merc ace					135000	|	135000+10000= 145000	|	
+*bandit dark				81000	|	81000+10000	= 91000		|	
+*neutral					75400	|				 			|	75400-10000		= 65400
+									|				 			|	
+=exos	                            |	            	        |	
+-Mono				100k	154280	|	154280+20000= 174280	|	
+-Merc				75k		142610	|	142610+20000= 162610	|	
+-Bandit				65k		130220	|	130220+20000= 150220	|	
+*neutral					129680	|							|	129680-20000	= 109680
+*eco						155000	|				 			|	155000-20000	= 135000
+*army						139510	|				 			|	139510-20000	= 119510
+									|				 			|	
+=nosorog	                        |	          	            |	
+-mono						190000	|	190000+30000= 220000	|	
+-merc						195000	|	195000+30000= 225000	|	
+-army						185000	|							|	185000-30000	= 155000
+
+
+Commission taken:
+Pistols:	1000
+SMG:		3000
+Shotgun:	4000
+AR:			5000
+Sniper:		7000
+Heavy:		10000
+
+seva:		10000
+exo:		20000
+noso:		30000
+
+Unique:		5000 extra
